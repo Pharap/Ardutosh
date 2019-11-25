@@ -147,15 +147,11 @@ void xString::Insert(char c, size_t index)
 {
 	size_t length = Length();
 
-	for (size_t n = length; n > index; n--)
+	for(size_t i = index; i <= (length + 1); ++i)
 	{
-		data[n] = data[n - 1];
-	}
-	data[index] = c;
-
-	if (index == length)
-	{
-		data[index + 1] = '\0';
+		auto temp = data[i];
+		data[i] = c;
+		c = temp;
 	}
 }
 
