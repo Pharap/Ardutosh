@@ -2,6 +2,7 @@
 #include "Platform.h"
 #include "Defines.h"
 #include <string.h>
+#include <limits.h>
 
 size_t xString::CalculateLength() const 
 {
@@ -24,26 +25,28 @@ char xString::Read(size_t i) const
 	return (type == Type::Flash) ? pgm_read_byte(&data[i]) : data[i];
 }
 
-int xString::GetIndex(char search, int start) const
+int xString::GetIndex(char search, size_t start) const
 {
-	int length = Length();
+	constexpr size_t intMax = static_cast<size_t>(INT_MAX);
+
+	size_t length = Length();
 	if (start < length)
 	{
-		for (int i = start; i < length; i++)
+		for (size_t index = start; (index < length) && (index <= intMax); ++index)
 		{
-			if (Read(i) == search)
+			if (Read(index) == search)
 			{
-				return i;
+				return index;
 			}
 		}
 	}
 	return -1;
 }
 
-int xString::GetWordLength(int index)  const
+size_t xString::GetWordLength(size_t index)  const
 {
-	int length = Length();
-	int count = 0;
+	size_t length = Length();
+	size_t count = 0;
 
 	while(index < length)
 	{
@@ -58,11 +61,11 @@ int xString::GetWordLength(int index)  const
 	return count;
 }
 
-int xString::NumLines(int maxCharactersPerLine) const
+size_t xString::NumLines(size_t maxCharactersPerLine) const
 {
-	int length = Length();
-	int count = 0;
-	int index = 0;
+	size_t length = Length();
+	size_t count = 0;
+	size_t index = 0;
 
 	while (index < length)
 	{
@@ -79,10 +82,10 @@ int xString::NumLines(int maxCharactersPerLine) const
 	return count;
 }
 
-int xString::GetLineStartIndex(int lineNumber, int maxCharactersPerLine) const
+size_t xString::GetLineStartIndex(size_t lineNumber, size_t maxCharactersPerLine) const
 {
-	int length = Length();
-	int index = 0;
+	size_t length = Length();
+	size_t index = 0;
 
 	while (index < length)
 	{
@@ -97,10 +100,10 @@ int xString::GetLineStartIndex(int lineNumber, int maxCharactersPerLine) const
 	return index; 
 }
 
-int xString::GetLineEndIndex(int start, int maxCharactersPerLine) const
+size_t xString::GetLineEndIndex(size_t start, size_t maxCharactersPerLine) const
 {
-	int length = Length();
-	int index = start;
+	size_t length = Length();
+	size_t index = start;
 
 	while (index < length)
 	{
@@ -115,7 +118,7 @@ int xString::GetLineEndIndex(int start, int maxCharactersPerLine) const
 
 		if (c != ' ')
 		{
-			int wordLength = GetWordLength(index);
+			size_t wordLength = GetWordLength(index);
 			if (index + wordLength - start < maxCharactersPerLine)
 			{
 				index += wordLength;
@@ -138,11 +141,11 @@ int xString::GetLineEndIndex(int start, int maxCharactersPerLine) const
 	return length;
 }
 
-void xString::Insert(char c, int index)
+void xString::Insert(char c, size_t index)
 {
-	int length = Length();
+	size_t length = Length();
 
-	for (int n = length; n > index; n--)
+	for (size_t n = length; n > index; n--)
 	{
 		data[n] = data[n - 1];
 	}
@@ -154,11 +157,11 @@ void xString::Insert(char c, int index)
 	}
 }
 
-void xString::Remove(int index)
+void xString::Remove(size_t index)
 {
-	int length = Length();
+	size_t length = Length();
 
-	for (int n = index; n < length; n++)
+	for (size_t n = index; n < length; n++)
 	{
 		data[n] = data[n + 1];
 	}

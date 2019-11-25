@@ -14,16 +14,16 @@ public:
 	xString() : data(nullptr), type(Type::RAM) {}
 	xString(const char* inData, Type inType = Type::RAM) : data((char*) inData), type(inType) {  }
 
-	int GetLineStartIndex(int lineNumber, int maxCharactersPerLine) const;
-	int GetIndex(char search, int start = 0) const;
-	int GetLineEndIndex(int start, int maxCharactersPerLine) const;
+	size_t GetLineStartIndex(size_t lineNumber, size_t maxCharactersPerLine) const;
+	int GetIndex(char search, size_t start = 0) const;
+	size_t GetLineEndIndex(size_t start, size_t maxCharactersPerLine) const;
 	size_t Length() const { return CalculateLength(); }
-	int GetWordLength(int index) const;
-	int NumLines(int maxCharactersPerLine) const;
+	size_t GetWordLength(size_t index) const;
+	size_t NumLines(size_t maxCharactersPerLine) const;
 	const char* GetData() const { return data; }
 	char operator [] (size_t i) const;
-	void Insert(char c, int index);
-	void Remove(int index);
+	void Insert(char c, size_t index);
+	void Remove(size_t index);
 
 private:
 	char Read(size_t i) const ;
