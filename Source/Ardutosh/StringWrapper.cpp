@@ -111,31 +111,32 @@ size_t xString::GetLineEndIndex(size_t start, size_t maxCharactersPerLine) const
 		char c = Read(index);
 		if (c == '\n' || c == '\r')
 		{
-			return index + 1;
+			return (index + 1);
 		}
 
-		if (index - start >= maxCharactersPerLine)
+		if ((index - start) >= maxCharactersPerLine)
 			return index;
 
-		if (c != ' ')
+		if(c == ' ')
 		{
-			size_t wordLength = GetWordLength(index);
-			if (index + wordLength - start < maxCharactersPerLine)
-			{
-				index += wordLength;
-			}
-			else if (index == start)
-			{
-				return start + maxCharactersPerLine - 1;
-			}
-			else
-			{
-				return index;
-			}
+			++index;
+			continue;
 		}
-		else
+
+		size_t startIndex = index;
+
+		while(index < length)
 		{
-			index++;
+			char c = Read(index);
+			if (c == ' ' || c == '\n' || c == '\r')
+				break;
+				
+			++index;
+		}
+
+		if ((index - start) >= maxCharactersPerLine)
+		{
+			return (startIndex == start) ? (start + maxCharactersPerLine - 1) : startIndex;
 		}
 	}
 
