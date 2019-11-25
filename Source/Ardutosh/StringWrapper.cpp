@@ -3,7 +3,7 @@
 #include "Defines.h"
 #include <string.h>
 
-int xString::CalculateLength() const 
+size_t xString::CalculateLength() const 
 {
 	if (!data)
 		return 0;
