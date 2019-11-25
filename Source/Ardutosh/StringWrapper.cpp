@@ -14,22 +14,14 @@ size_t xString::CalculateLength() const
 	return strlen(data);
 }
 
-char xString::operator [] (int i) const
+char xString::operator [] (size_t index) const
 {
-	if (i >= 0 && i < Length())
-	{
-		return Read(i);
-	}
-	return '\0';
+	return (index < Length()) ? Read(index) : '\0';
 }
 
-char xString::Read(int i) const
+char xString::Read(size_t i) const
 {
-	if (type == Type::Flash)
-	{
-		return pgm_read_byte(&data[i]);
-	}
-	return data[i];
+	return (type == Type::Flash) ? pgm_read_byte(&data[i]) : data[i];
 }
 
 int xString::GetIndex(char search, int start) const

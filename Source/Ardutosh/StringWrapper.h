@@ -21,12 +21,12 @@ public:
 	int GetWordLength(int index) const;
 	int NumLines(int maxCharactersPerLine) const;
 	const char* GetData() const { return data; }
-	char operator [] (int i) const;
+	char operator [] (size_t i) const;
 	void Insert(char c, int index);
 	void Remove(int index);
 
 private:
-	char Read(int i) const ;
+	char Read(size_t i) const ;
 	size_t CalculateLength() const;
 
 	char* data;
